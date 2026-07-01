@@ -1,8 +1,10 @@
+import os
+import shutil
 import urllib.request
 import json
 
-# URL of the official Keiyoushi repo index
 SOURCE_URL = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json"
+APK_BASE_URL = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/apk/"
 
 # --- CONFIGURATION ---
 ALLOWED_PACKAGES = {
@@ -11,6 +13,11 @@ ALLOWED_PACKAGES = {
     "eu.kanade.tachiyomi.extension.en.readallcomicscom"
 }
 # ---------------------
+
+# Wipe existing apk folder to remove outdated versions
+if os.path.exists("apk"):
+    shutil.rmtree("apk")
+os.makedirs("apk")
 
 try:
     print("Fetching original Keiyoushi index...")
@@ -23,9 +30,12 @@ try:
         pkg_name = item.get("pkg")
         
         if pkg_name in ALLOWED_PACKAGES:
-            original_apk_name = item.get("apk", "")
-            # FIX: Added the critical /apk/ folder to the download path
-            item["apk"] = f"https://raw.githubusercontent.com/keiyoushi/extensions/repo/apk/{original_apk_name}"
+            apk_filename = item.get("apk")
+            
+            # Download the APK directly into our folder
+            print(f"Downloading {apk_filename}...")
+            apk_url = APK_BASE_URL + apk_filename
+            urllib.request.urlretrieve(apk_url, os.path.join("apk", apk_filename))
             
             print(f"Keeping allowed package: {pkg_name}")
             filtered_list.append(item)
@@ -34,7 +44,7 @@ try:
     with open("index.min.json", "w", encoding="utf-8") as f:
         json.dump(filtered_list, f, ensure_ascii=False, separators=(',', ':'))
         
-    print(f"Done! Remaining extensions: {len(filtered_list)}")
+    print(f"Done! Saved {len(filtered_list)} extensions and their APKs.")
 
 except Exception as e:
     print(f"An error occurred: {e}")
