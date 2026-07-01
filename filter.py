@@ -5,7 +5,6 @@ import json
 SOURCE_URL = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json"
 
 # --- CONFIGURATION ---
-# Add ONLY the exact package names ("pkg") you want to KEEP
 ALLOWED_PACKAGES = {
     "eu.kanade.tachiyomi.extension.en.weebcentral",
     "eu.kanade.tachiyomi.extension.all.mangadex",
@@ -19,12 +18,16 @@ try:
     with urllib.request.urlopen(req) as response:
         extensions_list = json.loads(response.read().decode('utf-8'))
     
-    # Keep ONLY allowed items
     filtered_list = []
     for item in extensions_list:
         pkg_name = item.get("pkg")
         
         if pkg_name in ALLOWED_PACKAGES:
+            # FIX: Force the APK download path to point to Keiyoushi's servers
+            # so Mihon doesn't try to find the files in your text-only repository
+            original_apk_name = item.get("apk", "")
+            item["apk"] = f"https://raw.githubusercontent.com/keiyoushi/extensions/repo/{original_apk_name}"
+            
             print(f"Keeping allowed package: {pkg_name}")
             filtered_list.append(item)
             
