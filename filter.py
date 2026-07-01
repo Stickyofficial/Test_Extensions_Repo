@@ -8,7 +8,7 @@ SOURCE_URL = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.
 # Add ONLY the exact package names ("pkg") you want to KEEP
 ALLOWED_PACKAGES = {
     "eu.kanade.tachiyomi.extension.en.weebcentral",
-    "eu.kanade.tachiyomi.extension.en.mangadex",
+    "eu.kanade.tachiyomi.extension.all.mangadex",
     "eu.kanade.tachiyomi.extension.en.readallcomicscom"
 }
 # ---------------------
