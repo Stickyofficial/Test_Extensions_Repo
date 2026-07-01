@@ -23,10 +23,9 @@ try:
         pkg_name = item.get("pkg")
         
         if pkg_name in ALLOWED_PACKAGES:
-            # FIX: Force the APK download path to point to Keiyoushi's servers
-            # so Mihon doesn't try to find the files in your text-only repository
             original_apk_name = item.get("apk", "")
-            item["apk"] = f"https://raw.githubusercontent.com/keiyoushi/extensions/repo/{original_apk_name}"
+            # FIX: Added the critical /apk/ folder to the download path
+            item["apk"] = f"https://raw.githubusercontent.com/keiyoushi/extensions/repo/apk/{original_apk_name}"
             
             print(f"Keeping allowed package: {pkg_name}")
             filtered_list.append(item)
