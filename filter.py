@@ -9,7 +9,6 @@ APK_BASE_URL = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/apk/
 # --- CONFIGURATION ---
 ALLOWED_PACKAGES = {
     "eu.kanade.tachiyomi.extension.en.weebcentral",
-    "eu.kanade.tachiyomi.extension.all.mangadex",
     "eu.kanade.tachiyomi.extension.en.readallcomicscom"
 }
 # ---------------------
